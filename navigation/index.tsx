@@ -8,13 +8,25 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 
+const MyTheme = {
+  dark: false,
+  colors: {
+    primary: 'rgb(28, 28, 30)',
+    background: 'rgb(242, 242, 242)',
+    card: 'rgb(242, 204, 4)',
+    text: 'rgb(28, 28, 30)',
+    border: 'rgb(28, 28, 30)',
+    notification: 'rgb(28, 28, 30)',
+  },
+};
+
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={MyTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
