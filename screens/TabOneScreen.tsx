@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, TextInput, Image, FlatList, ActivityIndicator } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -8,13 +10,77 @@ import { MonoText } from '../components/StyledText';
 import Colors from '../constants/Colors';
 
 export default function TabOneScreen({ path }: { path: string }) {
-  return (
+  const [text, setText] = useState(''); //Nav Bar Var
 
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr')
+      .then((response) => response.json())
+      .then((json) => setData(json.results))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
+  
+  return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <View style={styles.navbar}>
+      <TextInput
+        style={styles.search}
+        onChangeText={text => setText(text)}
+        defaultValue={text}
+        placeholder="Rechercher sur AlloCiné"
+      />
+      </View>
+
+      <View style={{ marginLeft: 15, marginTop: 20}}>
+      <View>
+        <View style={{ marginBottom: 25 }}>
+        <Text style={styles.title}>Salles de cinéma</Text>
+        <View style={{ flexDirection:'row'}}>
+          <View style={{width: '43%', height: '43%'}} >
+            <Image
+              style={styles.imgSalleCinema}
+              source={require("../images/Map.png")}
+            />
+            <Text style={styles.title2}>À proximité</Text>
+          </View>
+          <View style={{width: '43%', height: '43%'}}>
+            <Image
+              style={styles.imgSalleCinema}
+              source={require("../images/CineFav.png")}
+            />
+            <Text style={styles.title2}>Mes Cinémas</Text>
+          </View>
+        </View>
+        </View>
+        <View style={styles.box}>
+        <Text style={styles.title}>Sortie de la semaine</Text>
+          <View>
+            <Image
+              style={styles.imgRow}
+              source={require("../images/SoriteSemaine.png")}
+            />
+        </View>
+        </View>
+      </View>
+        
+        {isLoading ? <ActivityIndicator/> : (
+          <FlatList
+          data={data}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({ item }) => (
+            <Text>{item.title}, {item.release_date}</Text>
+          )}
+        />
+      )}
+      </View>
+
     </View>
+
+//https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr
+ 
   );
 }
 
@@ -25,14 +91,36 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  box: {
+    marginBottom: 15
+  },
+  navbar: {
+    width: '100%',
+    height: '10%',
+    backgroundColor: '#fbd022'
+  },
+  search: {
+    marginTop: '2%',
+    borderWidth: 1,
+    borderColor: '#eeecef',
+    width: '85%',
+    height: '55%',
+    justifyContent: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    backgroundColor: '#eeedf2',
+    borderRadius: 50,
+    padding: 10,
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   separator: {
     marginVertical: 30,
@@ -90,4 +178,32 @@ const styles = StyleSheet.create({
   helpLinkText: {
     textAlign: 'center',
   },
+imgSalleCinema: {
+  borderRadius: 10,
+  width: 150,
+  height: 100,
+  marginBottom: 5,
+},
+imgRow: {
+  borderRadius: 10,
+  width: '96%',
+  height: 120,
+  marginBottom: 5,
+},
+title: {
+  marginBottom: 15,
+  fontSize: 24,
+  fontWeight: "800",
+  textAlign: "left"
+},
+title2: {
+  marginBottom: 15,
+  fontSize: 16,
+  fontWeight: "800",
+},
+block: {
+  marginLeft: 15,
+  marginTop: 20,
+ marginBottom: 140
+},
 });

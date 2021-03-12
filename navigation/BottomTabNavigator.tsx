@@ -6,8 +6,9 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
+import StreamingScreen from '../screens/StreamingScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { BottomTabParamList, TabOneParamList, StreamingParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -17,19 +18,30 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: '#fece12', 
+      inactiveTintColor: '#888888', 
+      style: {
+        backgroundColor: '#2e2e2e'
+      } }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Film"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="film" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Streaming"
+        component={StreamingNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="beer-outline" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Streaming2"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="beer-outline" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -52,9 +64,35 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Cinema' }}
+        options={{ headerTitle: 'Cinéma', 
+        headerTintColor: 'black',
+        headerTitleStyle: {
+          fontWeight: '800',
+          fontSize: 30,
+          marginRight: 240
+        },}}
       />
     </TabOneStack.Navigator>
+  );
+}
+
+const StreamingStack = createStackNavigator<StreamingParamList>();
+
+function StreamingNavigator() {
+  return (
+    <StreamingStack.Navigator>
+      <StreamingStack.Screen
+        name="StreamingScreen"
+        component={StreamingScreen}
+        options={{ headerTitle: 'Cinéma', 
+        headerTintColor: 'black',
+        headerTitleStyle: {
+          fontWeight: '800',
+          fontSize: 30,
+          marginRight: 240
+        },}}
+      />
+    </StreamingStack.Navigator>
   );
 }
 
@@ -64,9 +102,16 @@ function TabTwoNavigator() {
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
-        name="TabTwoScreen"
+        name="TabTwoStackScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Cinéma', 
+        headerTintColor: 'black',
+        headerTitleStyle: {
+          fontWeight: '800',
+          fontSize: 30,
+          marginRight: 240
+          
+        },}}
       />
     </TabTwoStack.Navigator>
   );

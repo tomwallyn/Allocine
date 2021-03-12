@@ -13,9 +13,9 @@ const MyTheme = {
   colors: {
     primary: 'rgb(28, 28, 30)',
     background: 'rgb(242, 242, 242)',
-    card: 'rgb(242, 204, 4)',
+    card: '#fbd022',
     text: 'rgb(28, 28, 30)',
-    border: 'rgb(28, 28, 30)',
+    border: 'transparent',
     notification: 'rgb(28, 28, 30)',
   },
 };
