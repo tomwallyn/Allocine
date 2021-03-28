@@ -1,121 +1,187 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, TextInput, Image, FlatList, ActivityIndicator } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  ScrollView,
+  Button
+} from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { MonoText } from '../components/StyledText';
-import Colors from '../constants/Colors';
+import EditScreenInfo from "../components/EditScreenInfo";
+import { Text, View } from "../components/Themed";
+import { MonoText } from "../components/StyledText";
+import Colors from "../constants/Colors";
+import DetailsScreen from "./Details";
+
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+const Stack = createStackNavigator();
 
 export default function TabOneScreen({ path }: { path: string }) {
-  const [text, setText] = useState(''); //Nav Bar Var
+  const [text, setText] = useState(""); //Nav Bar Var
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr')
+    fetch(
+      "https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr"
+    )
       .then((response) => response.json())
       .then((json) => setData(json.results))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
-      <TextInput
-        style={styles.search}
-        onChangeText={text => setText(text)}
-        defaultValue={text}
-        placeholder="Rechercher sur AlloCiné"
-      />
-      </View>
-
-      <View style={{ marginLeft: 15, marginTop: 20}}>
-      <View>
-        <View style={{ marginBottom: 25 }}>
-        <Text style={styles.title}>Salles de cinéma</Text>
-        <View style={{ flexDirection:'row'}}>
-          <View style={{width: '43%', height: '43%'}} >
-            <Image
-              style={styles.imgSalleCinema}
-              source={require("../images/Map.png")}
-            />
-            <Text style={styles.title2}>À proximité</Text>
-          </View>
-          <View style={{width: '43%', height: '43%'}}>
-            <Image
-              style={styles.imgSalleCinema}
-              source={require("../images/CineFav.png")}
-            />
-            <Text style={styles.title2}>Mes Cinémas</Text>
-          </View>
-        </View>
-        </View>
-        <View style={styles.box}>
-        <Text style={styles.title}>Sortie de la semaine</Text>
-          <View>
-            <Image
-              style={styles.imgRow}
-              source={require("../images/SoriteSemaine.png")}
-            />
-        </View>
-        </View>
-      </View>
-        
-        {isLoading ? <ActivityIndicator/> : (
-          <FlatList
-          data={data}
-          keyExtractor={({ id }, index) => id}
-          renderItem={({ item }) => (
-            <Text>{item.title}, {item.release_date}</Text>
-          )}
+        <TextInput
+          style={styles.search}
+          onChangeText={(text) => setText(text)}
+          defaultValue={text}
+          placeholder="Rechercher sur AlloCiné"
         />
-      )}
       </View>
+      <ScrollView>
+        <View style={{ marginLeft: 15, marginTop: 20 }}>
+          <View>
+            <View style={{ marginBottom: 25 }}>
+              <Text style={styles.title}>Salles de cinéma</Text>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ width: "43%", height: "43%" }}>
+                  <Image
+                    style={styles.imgSalleCinema}
+                    source={require("../images/Map.png")}
+                  />
+                  <Text style={styles.title2}>À proximité</Text>
+                </View>
+                <View style={{ width: "43%", height: "43%" }}>
+                  <Image
+                    style={styles.imgSalleCinema}
+                    source={require("../images/CineFav.png")}
+                  />
+                  <Text style={styles.title2}>Mes Cinémas</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.box}>
+              <Text style={styles.title}>Sortie de la semaine</Text>
+              <View>
+                <Image
+                  style={styles.imgRow}
+                  source={require("../images/SoriteSemaine.png")}
+                />
+              </View>
+            </View>
+          </View>
 
+          <Text style={styles.title}>Film populaire</Text>
+          <ScrollView horizontal={true}>
+            <View style={{ flexDirection: "row" }}>
+              {isLoading ? (
+                <ActivityIndicator />
+              ) : (
+                <FlatList
+                  numColumns={1001}
+                  data={data}
+                  keyExtractor={({ id }, index) => id}
+                  renderItem={({ item }) => (
+                    <View style={{ width: 150 }}>
+                          <Button  
+              title="Go to URL"  
+              onPress={() => this.props.navigation.navigate('Details')}  
+            />  
+
+                      <Image
+                        style={styles.imgFilm}
+                        source={{
+                          uri:
+                            "https://image.tmdb.org/t/p/w500" +
+                            item.backdrop_path,
+                        }}
+                      />
+
+                      <Text style={styles.titleFilm}>{item.title}</Text>
+
+                      <Text style={styles.subTitleFilm}>
+                        {item.release_date}
+                      </Text>
+                    </View>
+                  )}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      </ScrollView>
     </View>
 
-//https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr
- 
+    //https://api.themoviedb.org/3/movie/popular?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr
   );
 }
 
 function handleHelpPress() {
   WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet'
+    "https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
   );
 }
 
 const styles = StyleSheet.create({
   searchSection: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   box: {
-    marginBottom: 15
+    marginBottom: 15,
+  },
+  imgFilm: {
+    borderRadius: 10,
+    width: "90%",
+    height: 220,
+    marginBottom: 5,
+  },
+  titleFilm: {
+    marginTop: 5,
+    marginBottom: 3,
+    fontSize: 14,
+    fontWeight: "800",
+    width: "100%",
+    textAlign: "center",
+  },
+  subTitleFilm: {
+    marginBottom: 15,
+    fontSize: 11,
+    fontWeight: "700",
+    width: "100%",
+    color: "#8b8b8b",
+    textAlign: "center",
   },
   navbar: {
-    width: '100%',
-    height: '10%',
-    backgroundColor: '#fbd022'
+    width: "100%",
+    height: "10%",
+    backgroundColor: "#fbd022",
   },
   search: {
-    marginTop: '2%',
+    marginTop: "2%",
     borderWidth: 1,
-    borderColor: '#eeecef',
-    width: '85%',
-    height: '55%',
-    justifyContent: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    backgroundColor: '#eeedf2',
+    borderColor: "#eeecef",
+    width: "85%",
+    height: "55%",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    backgroundColor: "#eeedf2",
     borderRadius: 50,
     padding: 10,
   },
@@ -125,38 +191,38 @@ const styles = StyleSheet.create({
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   developmentModeText: {
     marginBottom: 20,
     fontSize: 14,
     lineHeight: 19,
-    textAlign: 'center',
+    textAlign: "center",
   },
   contentContainer: {
     paddingTop: 30,
   },
   welcomeContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
     marginBottom: 20,
   },
   welcomeImage: {
     width: 100,
     height: 80,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 3,
     marginLeft: -10,
   },
   getStartedContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 50,
   },
   homeScreenFilename: {
     marginVertical: 7,
   },
   codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
+    color: "rgba(96,100,109, 0.8)",
   },
   codeHighlightContainer: {
     borderRadius: 3,
@@ -165,45 +231,45 @@ const styles = StyleSheet.create({
   getStartedText: {
     fontSize: 17,
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: "center",
   },
   helpContainer: {
     marginTop: 15,
     marginHorizontal: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   helpLink: {
     paddingVertical: 15,
   },
   helpLinkText: {
-    textAlign: 'center',
+    textAlign: "center",
   },
-imgSalleCinema: {
-  borderRadius: 10,
-  width: 150,
-  height: 100,
-  marginBottom: 5,
-},
-imgRow: {
-  borderRadius: 10,
-  width: '96%',
-  height: 120,
-  marginBottom: 5,
-},
-title: {
-  marginBottom: 15,
-  fontSize: 24,
-  fontWeight: "800",
-  textAlign: "left"
-},
-title2: {
-  marginBottom: 15,
-  fontSize: 16,
-  fontWeight: "800",
-},
-block: {
-  marginLeft: 15,
-  marginTop: 20,
- marginBottom: 140
-},
+  imgSalleCinema: {
+    borderRadius: 10,
+    width: 150,
+    height: 100,
+    marginBottom: 5,
+  },
+  imgRow: {
+    borderRadius: 10,
+    width: "96%",
+    height: 120,
+    marginBottom: 5,
+  },
+  title: {
+    marginBottom: 15,
+    fontSize: 24,
+    fontWeight: "800",
+    textAlign: "left",
+  },
+  title2: {
+    marginBottom: 15,
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  block: {
+    marginLeft: 15,
+    marginTop: 20,
+    marginBottom: 140,
+  },
 });

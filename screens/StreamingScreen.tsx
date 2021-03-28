@@ -33,25 +33,25 @@ export default function StreamingScreen({ path }: { path: string }) {
       <ScrollView style={styles.block}>
         <Text style={styles.title}>Plateformes</Text>
 
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/disney.png")}/>
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/netflix.png")}/>
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/canal.png")} />
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/prime.png")} />
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/ocn.png")} />
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/apple.png")} />
         </View>
-        <View>
+        <View style={{backgroundColor: 'transparent'}}>
           <Image style={styles.imgRow} source={require("../images/salto.png")} />
         </View>
       </ScrollView>
@@ -118,8 +118,6 @@ const styles = StyleSheet.create({
   block: {
     marginLeft: 15,
     marginTop: 20,
-
-
   },
   developmentModeText: {
     marginBottom: 20,

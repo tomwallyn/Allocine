@@ -8,6 +8,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import StreamingScreen from '../screens/StreamingScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import DetailsScreen from '../screens/Details';
 import { BottomTabParamList, TabOneParamList, StreamingParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -31,17 +32,24 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Streaming"
-        component={StreamingNavigator}
+        name="Serie"
+        component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="beer-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="tv-outline" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="Streaming2"
-        component={TabTwoNavigator}
+        name="Streaming"
+        component={StreamingNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="beer-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="logo-youtube" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Streamingg"
+        component={DetailsNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="logo-youtube" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -114,5 +122,26 @@ function TabTwoNavigator() {
         },}}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const DetailsStack = createStackNavigator<DetailsParamList>();
+
+function DetailsNavigator() {
+  return (
+    <DetailsStack.Navigator>
+      <DetailsStack.Screen
+        name="DetailsStackScreen"
+        component={DetailsScreen}
+        options={{ headerTitle: 'Cinéma', 
+        headerTintColor: 'black',
+        headerTitleStyle: {
+          fontWeight: '800',
+          fontSize: 30,
+          marginRight: 240
+          
+        },}}
+      />
+    </DetailsStack.Navigator>
   );
 }
