@@ -65,13 +65,13 @@ export default function TabTwoScreen() {
         <View style={{ marginLeft: 15, marginTop: 20 }}>
           
           <Text style={styles.title}>Series populaire</Text>
-          <ScrollView horizontal={true}>
+          
             <View style={{ flexDirection: "row" }}>
               {isLoading ? (
                 <ActivityIndicator />
               ) : (
                 <FlatList
-                  numColumns={1001}
+                  horizontal
                   data={data}
                   keyExtractor={({ id }, index) => id}
                   renderItem={({ item }) => (
@@ -93,16 +93,15 @@ export default function TabTwoScreen() {
                 />
               )}
             </View>
-          </ScrollView>
 
           <Text style={styles.title}>Serie en direct aujourd'hui</Text>
-          <ScrollView horizontal={true}>
+          
             <View style={{ flexDirection: "row" }}>
               {isLoading ? (
                 <ActivityIndicator />
               ) : (
                 <FlatList
-                  numColumns={1001}
+                  horizontal
                   data={data2}
                   keyExtractor={({ id }, index) => id}
                   renderItem={({ item }) => (
@@ -124,16 +123,15 @@ export default function TabTwoScreen() {
                 />
               )}
             </View>
-          </ScrollView>
+          
 
           <Text style={styles.title}>Serie en ce moment</Text>
-          <ScrollView horizontal={true}>
             <View style={{ flexDirection: "row" }}>
               {isLoading ? (
                 <ActivityIndicator />
               ) : (
                 <FlatList
-                  numColumns={1001}
+                  horizontal
                   data={data3}
                   keyExtractor={({ id }, index) => id}
                   renderItem={({ item }) => (
@@ -155,7 +153,6 @@ export default function TabTwoScreen() {
                 />
               )}
             </View>
-          </ScrollView>
         </View>
       </ScrollView>
     </View>

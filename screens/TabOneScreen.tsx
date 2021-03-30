@@ -22,9 +22,9 @@ import DetailsScreen from "./Details";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-const Stack = createStackNavigator();
 
-export default function TabOneScreen({ path }: { path: string }) {
+
+export default function TabOneScreen({navigation}) {
   const [text, setText] = useState(""); //Nav Bar Var
 
   const [isLoading, setLoading] = useState(true);
@@ -39,6 +39,7 @@ export default function TabOneScreen({ path }: { path: string }) {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+
 
   return (
     <View style={styles.container}>
@@ -84,22 +85,18 @@ export default function TabOneScreen({ path }: { path: string }) {
           </View>
 
           <Text style={styles.title}>Film populaire</Text>
-          <ScrollView horizontal={true}>
+          
             <View style={{ flexDirection: "row" }}>
               {isLoading ? (
                 <ActivityIndicator />
               ) : (
                 <FlatList
-                  numColumns={1001}
+                  horizontal
                   data={data}
                   keyExtractor={({ id }, index) => id}
                   renderItem={({ item }) => (
                     <View style={{ width: 150 }}>
-                          <Button  
-              title="Go to URL"  
-              onPress={() => this.props.navigation.navigate('Details')}  
-            />  
-
+                      <TouchableOpacity onPress={() => navigation.navigate('Details', {itemId: item.id})}>
                       <Image
                         style={styles.imgFilm}
                         source={{
@@ -108,6 +105,7 @@ export default function TabOneScreen({ path }: { path: string }) {
                             item.backdrop_path,
                         }}
                       />
+                      </TouchableOpacity>
 
                       <Text style={styles.titleFilm}>{item.title}</Text>
 
@@ -119,7 +117,7 @@ export default function TabOneScreen({ path }: { path: string }) {
                 />
               )}
             </View>
-          </ScrollView>
+          
         </View>
       </ScrollView>
     </View>

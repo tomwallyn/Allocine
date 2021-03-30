@@ -45,13 +45,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="logo-youtube" color={color} />,
         }}
       />
-      <BottomTab.Screen
-        name="Streamingg"
-        component={DetailsNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="logo-youtube" color={color} />,
-        }}
-      />
+      
     </BottomTab.Navigator>
   );
 }
@@ -122,26 +116,5 @@ function TabTwoNavigator() {
         },}}
       />
     </TabTwoStack.Navigator>
-  );
-}
-
-const DetailsStack = createStackNavigator<DetailsParamList>();
-
-function DetailsNavigator() {
-  return (
-    <DetailsStack.Navigator>
-      <DetailsStack.Screen
-        name="DetailsStackScreen"
-        component={DetailsScreen}
-        options={{ headerTitle: 'Cinéma', 
-        headerTintColor: 'black',
-        headerTitleStyle: {
-          fontWeight: '800',
-          fontSize: 30,
-          marginRight: 240
-          
-        },}}
-      />
-    </DetailsStack.Navigator>
   );
 }

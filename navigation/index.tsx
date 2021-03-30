@@ -8,6 +8,11 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 
+import Details from "../screens/Details";
+import StreamingScreen from "../screens/StreamingScreen";
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
+
 const MyTheme = {
   dark: false,
   colors: {
@@ -41,6 +46,10 @@ function RootNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Root" component={BottomTabNavigator} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="TabTwoScreen" component={TabTwoScreen} />
+      <Stack.Screen name="Details" component={Details} />
+      <Stack.Screen name="StreamingScreen" component={StreamingScreen} />
+      <Stack.Screen name="TabOneScreen" component={TabOneScreen} />
     </Stack.Navigator>
   );
 }

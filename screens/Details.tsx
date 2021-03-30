@@ -10,8 +10,9 @@ import { MonoText } from '../components/StyledText';
 import Colors from '../constants/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function DetailsScreen({ path }: { path: string }) {
+export default function DetailsScreen({route, navigation}) {
 
+  const { itemId } = route.params;
 
   const [text, setText] = useState(''); //Nav Bar Var
 
@@ -19,7 +20,7 @@ export default function DetailsScreen({ path }: { path: string }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/movie/527774?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr')
+    fetch(`https://api.themoviedb.org/3/movie/${JSON.stringify(itemId)}?api_key=6e11b2fc6fea6cebf32db4c122dab303&language=fr`)
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => console.error(error))
@@ -29,6 +30,7 @@ export default function DetailsScreen({ path }: { path: string }) {
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
+      
       </View>
       <ScrollView>
 
@@ -184,6 +186,12 @@ const styles = StyleSheet.create({
   },
   title: {
 
+    marginLeft: 15,
+    fontSize: 19,
+    fontWeight: "800",
+  },
+  retour: {
+    marginTop:35,
     marginLeft: 15,
     fontSize: 19,
     fontWeight: "800",
